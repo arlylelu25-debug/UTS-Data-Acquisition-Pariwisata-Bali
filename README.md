@@ -5,18 +5,17 @@
 **Akuisisi dan Pengolahan Data Destinasi Pariwisata di Bali**
 
 ### 1. Identitas
+- **Nama:** Maria Indriani Lelu
+  
+- **NIM:** 2501010335
+  
+- **Program Studi:** Informatika
+  
+- **Mata Kuliah:** Data Acquisition & Management
 
-- Nama: Maria Indriani Lelu
+- **Institusi:** INSTIKI
   
-- NIM: 2501010335
-  
-- Program Studi: Informatika
-  
-- Mata Kuliah: Data Acquisition & Management
-  
-- Institusi: INSTIKI
-  
-- Semester: Ganjil
+- **Semester:** Ganjil
 
 ### 2. Deskripsi Projek
 Projek ini membahas proses pengumpulan, pemeriksaan, pembersihan, dan penggabungan data pariwisata di Bali. Data diperoleh melalui tiga metode, yaitu download dataset, API, dan web scraping.
@@ -29,9 +28,8 @@ Projek ini membahas proses pengumpulan, pemeriksaan, pembersihan, dan penggabung
 5. Membersihkan dan menggabungkan data dari beberapa sumber.
 
 ### 4. Metode Akuisisi Data
-
 | Metode | Keterangan | Format |
-|---|---|---|
+| --- | --- | --- |
 | Download | Mengambil dataset pariwisata Bali | CSV/Excel |
 | API | Mengambil data cuaca wilayah Bali | JSON |
 | Web Scraping | Mengambil informasi pariwisata dari halaman web statis yang diizinkan | HTML/JSON |
@@ -39,9 +37,9 @@ Projek ini membahas proses pengumpulan, pemeriksaan, pembersihan, dan penggabung
 ### 5. Sumber Data
 Sumber data yang digunakan akan dicatat berdasarkan hasil pemeriksaan dan proses akuisisi.
 
-- Dataset: Data destinasi pariwisata Bali.
-- API: Open-Meteo.
-- Web Scraping: Halaman web statis yang mengizinkan proses scraping.
+- **Dataset:** Data destinasi pariwisata Bali.
+- **API:** Open-Meteo.
+- **Web Scraping:** Halaman web statis yang mengizinkan proses scraping.
 
 ### 6. Tahapan Pengerjaan
 1. Membaca dataset dan mengidentifikasi karakteristik data.
