@@ -1,0 +1,34 @@
+[
+  {
+    "tahun": 2024,
+    "bulan": "Januari",
+    "wisatawan_mancanegara": 450000,
+    "wisatawan_domestik": 650000,
+    "total_wisatawan": 1100000,
+    "asal_negara_terbanyak": "Australia"
+  },
+  {
+    "tahun": 2024,
+    "bulan": "Februari",
+    "wisatawan_mancanegara": 420000,
+    "wisatawan_domestik": 600000,
+    "total_wisatawan": 1020000,
+    "asal_negara_terbanyak": "Australia"
+  },
+  {
+    "tahun": 2024,
+    "bulan": "Maret",
+    "wisatawan_mancanegara": 480000,
+    "wisatawan_domestik": 680000,
+    "total_wisatawan": 1160000,
+    "asal_negara_terbanyak": "India"
+  },
+  {
+    "tahun": 2024,
+    "bulan": "April",
+    "wisatawan_mancanegara": 510000,
+    "wisatawan_domestik": 720000,
+    "total_wisatawan": 1230000,
+    "asal_negara_terbanyak": "Australia"
+  }
+]
