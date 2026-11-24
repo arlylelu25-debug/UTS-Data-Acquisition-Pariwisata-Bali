@@ -1,0 +1,7 @@
+tahun,bulan,wisatawan_mancanegara,wisatawan_domestik,total_wisatawan,asal_negara_terbanyak,sumber_data
+2024,Januari,450000,650000,1100000,Australia,Download
+2024,Februari,420000,600000,1020000,Australia,API
+2024,Maret,480000,680000,1160000,India,Scraping
+2024,April,510000,720000,1230000,Australia,Download
+2024,Mei,530000,750000,1280000,Australia,API
+2024,Juni,580000,820000,1400000,Australia,Scraping
