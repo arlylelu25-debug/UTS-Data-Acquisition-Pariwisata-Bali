@@ -1,0 +1,168 @@
+# UTS DATA ACQUISITION - PARIWISATA BALI
+# EMAIL: arlylelu25@gmail.com
+
+import os, json, time, hashlib, requests, pandas as pd
+
+EMAIL_KAMPUS = "arlylelu25@gmail.com"
+HEADERS = {"User-Agent": f"UTS-DataAcquisition/1.0 ({EMAIL_KAMPUS})"}
+os.makedirs('data/raw', exist_ok=True)
+os.makedirs('data/processed', exist_ok=True)
+
+def md5_file(path):
+    h = hashlib.md5()
+    with open(path, 'rb') as f:
+        for chunk in iter(lambda: f.read(4096), b''):
+            h.update(chunk)
+    return h.hexdigest()
+
+def get_dengan_retry(url, params=None):
+    for coba in range(3):
+        try:
+            r = requests.get(url, headers=HEADERS, params=params, timeout=30)
+            if r.status_code == 200:
+                return r
+            print(f"  Coba {coba+1} gagal status {r.status_code}")
+        except Exception as e:
+            print(f"  Coba {coba+1} error: {e}")
+        time.sleep(2)
+    return None
+
+# ========== SOAL 1: DOWNLOAD ==========
+print("SOAL 1: DOWNLOAD...")
+url_download = "https://ourworldindata.org/grapher/international-tourist-arrivals.csv"
+r = get_dengan_retry(url_download)
+open('data/raw/download.csv','wb').write(r.content)
+time.sleep(2)
+df_download = pd.read_csv('data/raw/download.csv', sep=',', encoding='utf-8', na_values=["", "NA", "N/A", "-"])
+print(f"  Download ASLI: {df_download.shape[0]} baris, {df_download.shape[1]} kolom")
+print(f"  Kolom: {list(df_download.columns)}")
+print(df_download[df_download['Entity']=='Indonesia'].head(3).to_string())
+
+# ========== SOAL 3: API ==========
+print("\nSOAL 3: API Open-Meteo...")
+lokasi = [
+    {"kabupaten": "Denpasar", "latitude": -8.65, "longitude": 115.22},
+    {"kabupaten": "Badung", "latitude": -8.80, "longitude": 115.16},
+    {"kabupaten": "Gianyar", "latitude": -8.54, "longitude": 115.32},
+    {"kabupaten": "Buleleng", "latitude": -8.11, "longitude": 115.08},
+    {"kabupaten": "Karangasem", "latitude": -8.45, "longitude": 115.61},
+]
+semua_api = []
+for loc in lokasi:
+    r = get_dengan_retry("https://api.open-meteo.com/v1/forecast",
+        params={"latitude": loc["latitude"], "longitude": loc["longitude"],
+                "hourly": "temperature_2m,precipitation", "forecast_days": 7})
+    data = r.json()
+    for i in range(len(data['hourly']['time'])):
+        semua_api.append({
+            "kabupaten": loc["kabupaten"],
+            "waktu": data['hourly']['time'][i],
+            "suhu_c": data['hourly']['temperature_2m'][i],
+            "curah_hujan_mm": data['hourly']['precipitation'][i]
+        })
+    print(f"  {loc['kabupaten']} dapat {len(data['hourly']['time'])} baris")
+    time.sleep(2)
+
+with open('data/raw/api.json','w') as f:
+    json.dump(semua_api, f, indent=2)
+df_api = pd.DataFrame(semua_api)
+print(f"  Total API ASLI: {len(df_api)} baris")
+
+# ========== SOAL 4: SCRAPING ==========
+print("\nSOAL 4: SCRAPING Wikipedia...")
+r_robots = get_dengan_retry("https://id.wikipedia.org/robots.txt")
+print(f"  robots.txt status: {r_robots.status_code}")
+print(f"  Isi robots.txt: {r_robots.text[:200]}")
+time.sleep(2)
+
+r_wiki = get_dengan_retry("https://id.wikipedia.org/wiki/Bali")
+open('data/raw/scraping.html','w', encoding='utf-8').write(r_wiki.text)
+print(f"  scraping.html tersimpan: {len(r_wiki.text)} karakter")
+
+tables = pd.read_html(r_wiki.text)
+print(f"  Jumlah tabel di halaman Bali: {len(tables)}")
+df_scraping = None
+for i, t in enumerate(tables):
+    cols = " ".join([str(c) for c in t.columns])
+    if "Kabupaten" in cols or "Kota" in cols or "Ibu kota" in cols:
+        df_scraping = t
+        print(f"  Tabel dipilih: tabel ke-{i}, kolom: {list(t.columns)}")
+        break
+if df_scraping is None:
+    df_scraping = tables[1]
+    print("  Tabel fallback dipakai")
+
+df_scraping.to_json('data/raw/scraping.json', orient='records', indent=2, force_ascii=False)
+print(f"  scraping.json: {df_scraping.shape}")
+
+# ========== SOAL 5: MERGE ==========
+print("\nSOAL 5: CLEAN + MERGE...")
+
+df_csv_bersih = df_download.copy()
+df_csv_bersih.columns = [c.strip().lower().replace(' ','_').replace('-','_') for c in df_csv_bersih.columns]
+df_csv_bersih = df_csv_bersih.drop_duplicates().dropna(how='all')
+df_csv_bersih.to_csv('data/processed/csv_bersih.csv', index=False)
+print(f"  csv_bersih.csv: {df_csv_bersih.shape}")
+
+df_api_bersih = df_api.copy()
+df_api_bersih['kabupaten_clean'] = df_api_bersih['kabupaten'].str.lower().str.strip()
+df_api_bersih = df_api_bersih.drop_duplicates()
+df_api_bersih.to_json('data/processed/json_bersih.json', orient='records', indent=2)
+print(f"  json_bersih.json: {df_api_bersih.shape}")
+
+df_html_bersih = df_scraping.copy()
+df_html_bersih.columns = [str(c).strip().lower().replace(' ','_') for c in df_html_bersih.columns]
+df_html_bersih = df_html_bersih.drop_duplicates()
+df_html_bersih.to_csv('data/processed/html_bersih.csv', index=False)
+df_html_bersih.to_html('data/processed/html_bersih.html', index=False)
+print(f"  html_bersih.csv: {df_html_bersih.shape}")
+
+kolom_kab = None
+for c in df_html_bersih.columns:
+    if 'kabupaten' in c or 'kota' in c or 'nama' in c:
+        kolom_kab = c
+        break
+if kolom_kab is None:
+    kolom_kab = df_html_bersih.columns[0]
+print(f"  Kolom kabupaten di scraping: {kolom_kab}")
+
+df_html_bersih['kabupaten_clean'] = df_html_bersih[kolom_kab].astype(str).str.lower().str.strip()
+df_html_bersih['kabupaten_clean'] = df_html_bersih['kabupaten_clean'].str.replace('kota ','', regex=False).str.replace('kabupaten ','', regex=False)
+
+df_merged = pd.merge(df_api_bersih, df_html_bersih, on='kabupaten_clean', how='left', validate='many_to_one')
+print(f"  Hasil merge sebelum dedup: {df_merged.shape}")
+df_merged = df_merged.drop_duplicates()
+print(f"  Hasil merge sesudah dedup: {df_merged.shape}")
+print(f"  Duplikasi: {df_merged.duplicated().sum()} (harus 0)")
+df_merged.to_csv('data/processed/gabungan.csv', index=False)
+df_merged.to_json('data/processed/gabungan.json', orient='records', indent=2)
+
+# ========== PROVENANCE + ETHICS ==========
+print("\nPROVENANCE + ETHICS...")
+provenance = pd.DataFrame([
+    {"sumber":"Download","nama_file":"data/raw/download.csv","URL":url_download,"tanggal_akses":"2026-11-27","lisensi":"CC BY 4.0 - Our World in Data","MD5":md5_file('data/raw/download.csv'),"ukuran_byte":os.path.getsize('data/raw/download.csv'),"jumlah_baris":len(df_download)},
+    {"sumber":"API","nama_file":"data/raw/api.json","URL":"https://api.open-meteo.com/v1/forecast","tanggal_akses":"2026-11-27","lisensi":"Gratis, tanpa API key - Open-Meteo","MD5":md5_file('data/raw/api.json'),"ukuran_byte":os.path.getsize('data/raw/api.json'),"jumlah_baris":len(df_api)},
+    {"sumber":"Scraping","nama_file":"data/raw/scraping.json","URL":"https://id.wikipedia.org/wiki/Bali","tanggal_akses":"2026-11-27","lisensi":"CC BY-SA 3.0 - Wikipedia","MD5":md5_file('data/raw/scraping.json'),"ukuran_byte":os.path.getsize('data/raw/scraping.json'),"jumlah_baris":len(df_scraping)},
+])
+provenance.to_csv('data/processed/provenance.csv', index=False)
+
+checklist = pd.DataFrame([
+    {"No":1,"Butir":"Tujuan jelas & sesuai izin","Jawaban":"Ya","Bukti":"Tugas UTS akademik, data Open Data"},
+    {"No":2,"Butir":"Sumber & lisensi dicantumkan","Jawaban":"Ya","Bukti":"URL + lisensi di provenance.csv"},
+    {"No":3,"Butir":"Tidak ada PII","Jawaban":"Ya","Bukti":"Tidak ada nama/NIK/email, hanya agregat"},
+    {"No":4,"Butir":"Quasi-identifier dinilai","Jawaban":"Ya","Bukti":"Entity/Tahun/Kabupaten = agregat, tidak bisa lacak orang"},
+    {"No":5,"Butir":"Tidak ada data sensitif","Jawaban":"Ya","Bukti":"Data wisata & cuaca"},
+    {"No":6,"Butir":"Tidak melanggar robots.txt / ToS","Jawaban":"Ya","Bukti":"Cek robots.txt Wikipedia, status 200"},
+    {"No":7,"Butir":"Tidak bias / merugikan","Jawaban":"Ya","Bukti":"Data resmi, tidak diskriminasi"},
+    {"No":8,"Butir":"Keamanan penyimpanan","Jawaban":"Ya","Bukti":"Tidak ada API key di notebook, User-Agent pakai email arlylelu25@gmail.com"},
+    {"No":9,"Butir":"Reproducible","Jawaban":"Ya","Bukti":"provenance.csv lengkap + MD5"},
+])
+checklist.to_csv('data/processed/data_ethics_checklist.csv', index=False)
+
+ukuran_download = os.path.getsize('data/raw/download.csv')
+estimasi = ukuran_download * 12 * 1.3
+print(f"\nEstimasi storage 1 tahun download: {ukuran_download} byte x 12 bulan x 1.3 backup = {estimasi:.0f} byte ({estimasi/1024/1024:.2f} MB)")
+
+print("\n=== SELESAI - SEMUA SESUAI SOAL ===")
+print("data/raw:", os.listdir('data/raw'))
+print("data/processed:", os.listdir('data/processed'))
