@@ -1,1 +1,5 @@
-
+Sumber,URL
+Dataset Wisatawan Bali (CSV),https://bali.bps.go.id
+Open-Meteo Historical Weather API,"https://archive-api.open-meteo.com/v1/archive?latitude=-8.65&longitude=115.2167&start_date=2025-01-01&end_date=2025-10-01&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=Asia%2FMakassar"
+Wikipedia Daftar Tempat Wisata di Bali,https://id.wikipedia.org/wiki/Daftar_tempat_wisata_di_Bali
+Wikipedia Kabupaten dan Kota di Bali,https://id.wikipedia.org/wiki/Daftar_kabupaten_dan_kota_di_Bali
