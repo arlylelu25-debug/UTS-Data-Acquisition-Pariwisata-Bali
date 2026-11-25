@@ -1,18 +1,20 @@
 # UTS Data Acquisition & Management — Kelas F
 
 **Nama:** Maria Indriani Lelu
+
 **NIM:** 2501010335
+
 **Prodi:** Informatika - INSTIKI
 
 ### Deskripsi
 Projek akuisisi dan pengolahan data pariwisata Bali dari 3 sumber: download, API, dan scraping.
 
 ### Sumber Data
-| Metode | Sumber | File |
-|---|---|---|
-| Download | BPS Provinsi Bali | `data/raw/download.csv` |
-| API | Open-Meteo Denpasar | `data/raw/api.json` |
-| Scraping | Wikipedia Daftar Tempat Wisata di Bali | `data/raw/scraping.html` |
+| Metode | Sumber | Link | File |
+|---|---|---|---|
+| Download | BPS Provinsi Bali | [bali.bps.go.id](https://bali.bps.go.id) | `data/raw/download.csv` |
+| API | Open-Meteo Denpasar | [api.open-meteo.com](https://api.open-meteo.com/v1/forecast?latitude=-8.65&longitude=115.2167&daily=temperature_2m_max,temperature_2m_min,precipitation_sum) | `data/raw/api.json` |
+| Scraping | Wikipedia Daftar Tempat Wisata di Bali | [id.wikipedia.org](https://id.wikipedia.org/wiki/Daftar_tempat_wisata_di_Bali) | `data/raw/scraping.html` |
 
 ### Isi Dataset
 - **Download:** 132 baris (12 bulan x 11 negara)
@@ -33,7 +35,7 @@ Data API hanya 11 hari sampel, bukan hourly setahun penuh.
 ### Etika Data
 - Lisensi: BPS terbuka akademik, Open-Meteo non-komersial, Wikipedia CC BY-SA.
 - PII: Tidak ada data pribadi.
-- Robots.txt Wikipedia sudah dicek dan diizinkan.
+- Robots.txt: Sudah dicek di [id.wikipedia.org/robots.txt](https://id.wikipedia.org/robots.txt) dan diizinkan.
 - API Key: Tidak ada.
 
 ### Struktur Folder
