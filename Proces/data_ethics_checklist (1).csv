@@ -1,0 +1,10 @@
+No,Aspek,Status,Bukti
+1,Tujuan & Manfaat Sah,Terpenuhi,Keperluan akademik UTS Data Acquisition & Management.
+2,Kewenangan & Lisensi,Terpenuhi,Data statistik publik resmi BPS; dicatat di provenance & README.
+3,Aturan Portal & robots.txt,Terpenuhi,Diunduh resmi dari bps.go.id; akses web mematuhi robots.txt.
+4,Minimasi Data & Relevansi,Terpenuhi,Data kunjungan wisman menurut paspor relevan dengan topik.
+5,Perlindungan PII / Quasi-ID,Terpenuhi,Data agregat per negara/kebangsaan; tidak memuat PII individu.
+6,Keamanan Penyimpanan,Terpenuhi,Berkas asli disimpan utuh di data/raw/ tanpa kredensial rahasia.
+7,Etika Akses & Beban Server,Terpenuhi,"Request terprogram memakai timeout, User-Agent email, dan jeda."
+8,"Akurasi, Integritas & MD5",Terpenuhi,Berkas asli tidak diubah; hash MD5 dan metadata dicatat.
+9,Orisinalitas & Transparansi,Terpenuhi,Dikerjakan mandiri dengan alur dan hasil yang jelas.
