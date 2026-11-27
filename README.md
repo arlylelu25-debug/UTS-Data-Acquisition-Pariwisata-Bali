@@ -27,4 +27,4 @@
 - `catatan_provenance.csv` : Catatan provenance lengkap untuk seluruh sumber data.
 ```[cite: 1, 2, 3, 4, 5]
 
-Silakan masukkan **3 URL sumber** (download, API, scraping) dan **nama berkas mentah** yang kamu pakai sekarang, agar bagian tabel keterangannya langsung terisi pas untuk datamu.
+
