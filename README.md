@@ -1,46 +1,30 @@
 # Analisis Wisatawan Mancanegara ke Bali 2025
 
-## Identitas
+## Data Diri
 - **Nama:** Maria Indriani Lelu
 - **NIM:** 2501010335
 - **Kelas:** F
+- **Mata Kuliah:** Data Acquisition & Management
+- **Topik:** Wisatawan Mancanegara ke Bali 2025
 
-## Deskripsi Proyek
-Proyek ini menganalisis kunjungan wisatawan mancanegara ke Bali selama Januari - Desember 2025, berdasarkan total kunjungan dari BPS Provinsi Bali dan distribusinya per negara asal.
+## Sumber Data & Provenance
+| Jenis Akuisisi | Nama Berkas Raw | URL Sumber | Tanggal Akses | Lisensi | MD5 Hash |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| Download | `data/raw/[nama_berkas_download]` | [URL sumber resmi] | [YYYY-MM-DD] | [Lisensi sumber] | `[md5_asli_berkas]` |
+| API | `data/raw/[nama_berkas_api.json]` | [URL endpoint / dokumentasi API] | [YYYY-MM-DD] | [Lisensi / ketentuan API] | `[md5_asli_berkas]` |
+| Scraping | `data/raw/[nama_berkas_scraping]` | [URL halaman statis target] | [YYYY-MM-DD] | [Lisensi / ketentuan halaman] | `[md5_asli_berkas]` |
 
-## Struktur Folder
-- `data/raw/download.csv` : Data utama wisatawan mancanegara
-- `data/raw/data_cuaca.csv` : Data cuaca harian Bali dari Open-Meteo
-- `data/raw/data_tempat_wisata.csv` : Daftar tempat wisata di Bali
-- `catatan_provenance.csv` : Daftar sumber data
-- `Proses/` : Catatan proses cleaning dan analisis
+## Keterangan Kepatuhan & Etika Data
+- **Pemeriksaan `robots.txt`:** [Catat hasil pengecekan `robots.txt` halaman target scraping serta bukti kepatuhannya]
+- **Teknis Akuisisi:** Seluruh request memakai `timeout`, `User-Agent` berisi email kampus sendiri, jeda antar-request, dan kredensial/API key disimpan terpisah di luar notebook.
+- **Data Ethics Checklist (9 Butir):** [Tersedia lengkap beserta bukti pada notebook / dokumen checklist, termasuk identifikasi PII/quasi-identifier dan lisensi sumber]
+- **Konsistensi Data & Penggabungan:** Angka pada dataset dan hasil penggabungan (`merge` dengan `validate`) mengacu langsung ke sumber resmi tanpa angka perkiraan atau duplikasi yang tidak diharapkan.
 
-## Isi Data Utama (download.csv)
-File ini berisi 132 baris data (12 bulan x 11 kategori negara).
+## Struktur Berkas & Folder
+- `data/raw/` : Berkas mentah asli (Download CSV/Excel, API JSON, Scraping JSON/HTML) tanpa perubahan.
+- `Proces/` : Hasil pembersihan/normalisasi (CSV bersih, JSON, HTML) serta berkas hasil gabungan beserta metadata.
+- `[nama_notebook].ipynb` : Notebook lengkap pengerjaan Soal 1–5 dengan seluruh sel sudah dijalankan.
+- `catatan_provenance.csv` : Catatan provenance lengkap untuk seluruh sumber data.
+```[cite: 1, 2, 3, 4, 5]
 
-Kolom:
-- `tahun` : 2025
-- `bulan` : 1-12 (Januari - Desember)
-- `negara_asal` : Australia, India, China, Singapura, Korea Selatan, Inggris, Prancis, Amerika Serikat, Malaysia, Jepang, Lainnya
-- `jumlah_wisatawan_mancanegara` : Jumlah kunjungan per negara per bulan
-- `sumber` : BPS Provinsi Bali - Total kunjungan per bulan
-
-Total kunjungan 2025: 6.948.754 kunjungan
-Bulan tertinggi: Juli 2025 (697.107 kunjungan)
-Bulan terendah: Februari 2025 (450.697 kunjungan)
-Negara asal terbanyak: Australia
-
-## Sumber Data
-- Total kunjungan per bulan: BPS Provinsi Bali (https://bali.bps.go.id)
-- Rincian per negara: Estimasi dari share / proporsi negara asal BPS, karena BPS tidak mempublikasikan rincian per negara per bulan secara terbuka.
-- Cuaca: Open-Meteo Historical Weather API
-- Tempat wisata: Wikipedia - Pariwisata di Bali & Daftar Kabupaten dan Kota di Bali
-
-## Cara Menjalankan
-1. Buka file CSV di Excel / Google Sheets
-2. Filter berdasarkan `bulan` atau `negara_asal` untuk analisis
-
-## Catatan / Keterbatasan
-- Total per bulan adalah data real dari BPS.
-- Rincian per negara adalah estimasi dari proporsi, bukan angka resmi per negara dari BPS.
-- Data cuaca diambil untuk titik Denpasar (latitude -8.65, longitude 115.2167).
+Silakan masukkan **3 URL sumber** (download, API, scraping) dan **nama berkas mentah** yang kamu pakai sekarang, agar bagian tabel keterangannya langsung terisi pas untuk datamu.
