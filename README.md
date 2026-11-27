@@ -17,11 +17,20 @@
 ## Keterangan Kepatuhan & Etika Data
 - **Pemeriksaan `robots.txt`:** `robots.txt` pada situs target scraping telah diperiksa sebelum pengambilan data dan dinyatakan diizinkan (`True`).
 - **Teknis Akuisisi:** Seluruh request memakai `timeout`, header `User-Agent` berisi kontak email, jeda antar-request, dan tanpa penyimpanan kredensial sensitif di dalam kode.
-- **Data Ethics Checklist (9 Butir):** Seluruh 9 butir etika data telah diperiksa dan dicatat pada `Proces/data_ethics_checklist.csv` serta notebook, termasuk verifikasi data publik non-PII, lisensi sumber, dan integritas hash MD5.
-- **Konsistensi Data & Penggabungan:** Angka pada dataset dan hasil penggabungan (`merge` dengan `validate`) mengacu langsung ke sumber resmi (`248x14` untuk Download, `168x4` untuk API, dan `120x6` untuk Scraping) tanpa angka perkiraan atau duplikasi yang tidak diharapkan.
+- **Data Ethics Checklist (9 Butir):** Seluruh 9 butir etika data telah diperiksa dan dicatat pada `data_ethics_checklist.csv` di root repository serta di dalam notebook, termasuk verifikasi data publik non-PII, lisensi sumber, dan integritas hash MD5.
+- **Konsistensi Data & Penggabungan:** Ukuran data mentah mengacu ke sumber aslinya (`248x14` untuk Download, `168x4` untuk API, dan `120x6` untuk Scraping), sedangkan hasil penggabungan akhir (`merge` dengan `validate="one_to_one"` pada kunci `bulan` 1-12) tersimpan di `Proces/gabungan.csv` berukuran `12x5` dengan `0` duplikasi baris.
 
 ## Struktur Berkas & Folder
-- `data/raw/` : Berkas mentah asli (Download CSV/Excel, API JSON, Scraping JSON/HTML) tanpa perubahan.
-- `Proces/` : Hasil pembersihan/normalisasi (CSV bersih, JSON, HTML) serta berkas hasil gabungan beserta metadata.
-- `UTS_Data_Acquisition_Pariwisata_Bali.ipynb` : Notebook lengkap pengerjaan akuisisi data dengan seluruh sel sudah dijalankan.
+- `data/raw/` : Berkas mentah asli (Download CSV, API JSON, dan Scraping CSV) tanpa perubahan.
+- `Proces/` : Hasil pembersihan/normalisasi (`csv_bersih.csv`, `data_json.json`, `data_html.html`) serta berkas hasil gabungan (`gabungan.csv`) beserta metadata (`metadata_gabungan.json`).
+- `UTS_Data_Acquisition_Pariwisata_Bali.ipynb` : Notebook lengkap pengerjaan akuisisi, pembersihan, dan penggabungan data.
 - `catatan_provenance.csv` : Catatan provenance lengkap untuk seluruh sumber data.
+- `data_ethics_checklist.csv` : Daftar periksa 9 butir etika data.
+```[cite: 2]
+
+### Hal yang Sudah Kuubah di Draf Ini
+* Lokasi `data_ethics_checklist.csv` diubah dari `Proces/data_ethics_checklist.csv` menjadi di *root* repository (`data_ethics_checklist.csv`) dan ditambahkan ke daftar *Struktur Berkas & Folder*[cite: 2].
+* Keterangan konsistensi & penggabungan dipisah jelas antara ukuran data mentah (`248x14`, `168x4`, `120x6`) dan hasil gabungan akhir (`12x5` pada kunci `bulan` dengan `one_to_one` dan `0` duplikat)[cite: 2].
+* Format berkas pada *Struktur Berkas & Folder* disesuaikan dengan berkas yang benar-benar ada (`Download CSV`, `API JSON`, `Scraping CSV`, serta isi folder `Proces/`)[cite: 2].
+
+Setelah kamu *copas* dan *commit* perubahan `README.md` ini di GitHub, repository-mu sudah konsisten[cite: 2]. Ada lagi yang ingin kamu pastikan sebelum dikirim?
